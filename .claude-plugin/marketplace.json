@@ -9,9 +9,10 @@
   "plugins": [
     {
       "name": "iso-figures",
-      "description": "14 isometric SVG figures for React with a dark graphite style and one accent light, plus the rules to create new ones that match.",
+      "description": "14 isometric SVG figures for React on dark and light themes, plus the rules to create new ones that match.",
       "source": "./",
-      "category": "design"
+      "category": "design",
+      "homepage": "https://canojs.github.io/iso-figures/"
     }
   ]
 }

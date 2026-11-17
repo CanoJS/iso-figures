@@ -1,6 +1,6 @@
 {
   "name": "iso-figures",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Isometric SVG figures for React and a Claude skill to draw new ones in the same style",
   "license": "MIT",
