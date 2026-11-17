@@ -117,6 +117,59 @@ export const PALETTES: Record<Theme, Palette> = {
   },
 };
 
+/**
+ * Real-world materials for the light theme. On a light page, objects keep the color they have in
+ * real life instead of turning white: hardware is graphite, laptops and monitors are aluminum,
+ * buildings are concrete and glass. Interface pieces (pages, dashboards, dials, clouds) stay in
+ * the plain light palette.
+ */
+export const MATERIALS = {
+  /** Black hardware: racks, switches, chips, storage. Slightly lifted so it reads on white. */
+  graphite: {
+    ...PALETTES.light,
+    top: "#3A3A40",
+    left: "#1C1C21",
+    right: "#2A2A30",
+    topHi: "#44444B",
+    topLow: "#2F2F35",
+    plate: "#26262C",
+    slot: "#24242A",
+    key: "#45454C",
+    line: "#3E3E45",
+    detail: "#62626B",
+    vent: "#33333A",
+    cylA: "#1C1C21",
+    cylB: "#45454C",
+    cylC: "#26262C",
+    cap: "#3A3A40",
+    shade: "#000000",
+    accent: "#9B7BFF",
+  },
+  /** Brushed aluminum: laptops and monitors, with black keys. */
+  aluminum: {
+    ...PALETTES.light,
+    top: "#E9EAED",
+    left: "#B5B9C1",
+    right: "#CDD0D6",
+    topHi: "#F1F2F4",
+    topLow: "#DCDEE2",
+    plate: "#D2D5DA",
+    slot: "#D3D6DB",
+    key: "#2B2B30",
+    line: "#A9ADB5",
+    detail: "#8B9099",
+    vent: "#B9BDC4",
+  },
+  /** Concrete and blue-gray glass: buildings. */
+  concrete: {
+    ...PALETTES.light,
+    top: "#E6E7EA",
+    left: "#8E99AB",
+    right: "#B4BDCA",
+    detail: "#7D8797",
+  },
+} satisfies Record<string, Palette>;
+
 type FigProps = {
   /** Unique id per instance (gradient ids). */
   id: string;
@@ -747,6 +800,17 @@ const FIGURES: Record<FigureKind, (p: FigProps) => ReactNode> = {
   orb: Orb,
 };
 
+/** Light-theme material per figure. Figures not listed use the plain light palette. */
+const LIGHT_MATERIAL: Partial<Record<FigureKind, Palette>> = {
+  server: MATERIALS.graphite,
+  database: MATERIALS.graphite,
+  switch: MATERIALS.graphite,
+  chip: MATERIALS.graphite,
+  monitor: MATERIALS.aluminum,
+  laptop: MATERIALS.aluminum,
+  building: MATERIALS.concrete,
+};
+
 type FigureProps = {
   kind: FigureKind;
   id: string;
@@ -759,7 +823,7 @@ type FigureProps = {
 /** Ready-to-use figure: floor light underneath and the figure centered. */
 export function Figure({ kind, id, accent, theme = "dark" }: FigureProps) {
   const F = FIGURES[kind];
-  const p = PALETTES[theme];
+  const p = theme === "light" ? (LIGHT_MATERIAL[kind] ?? PALETTES.light) : PALETTES.dark;
   const c = accent ?? p.accent;
   return (
     <g>
