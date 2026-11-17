@@ -1,0 +1,12 @@
+{
+  "name": "iso-figures",
+  "description": "Isometric SVG figures for React (servers, clouds, databases, PCs, chips, dashboards...) with a dark graphite style, a single accent light and subtle animations, plus the skill that teaches Claude to draw new ones in the same style.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jesus Cano",
+    "url": "https://github.com/CanoJS"
+  },
+  "repository": "https://github.com/CanoJS/iso-figures",
+  "license": "MIT",
+  "keywords": ["isometric", "svg", "react", "illustration", "design-system", "animation"]
+}
