@@ -3,55 +3,55 @@ import IsoBox from "./IsoBox";
 import { flat, iso, poly } from "./iso";
 
 /* -------------------------------------------------------------------------- */
-/*  iso-figures: figuras isometricas en SVG para React.                        */
-/*  Todas se dibujan alrededor del origen (0, 0, 0) del suelo, en las mismas   */
-/*  unidades que IsoBox, y animan sus luces con las clases de iso-figures.css. */
-/*  Para cambiar la marca, edita la paleta de abajo (ver references/brand.md). */
+/*  iso-figures: isometric SVG figures for React.                              */
+/*  Every figure is drawn around the ground origin (0, 0, 0), in the same      */
+/*  units as IsoBox, and animates its lights with the iso-figures.css classes. */
+/*  To rebrand, edit the palette below (see references/brand.md).              */
 /* -------------------------------------------------------------------------- */
 
-// Paleta: caras de grafito, un acento de apoyo y un punto caliente para los pulsos.
+// Palette: graphite faces, a support accent and a hot point for pulses.
 const TOP = "#2A2A2D";
 const LEFT = "#0E0E10";
 const RIGHT = "#18181A";
 const PERI = "#7D8BFF";
 const HOT = "#F1E8FF";
-/** Acento por defecto cuando no se pasa uno. */
+/** Default accent when none is passed. */
 const ACCENT = "#C9B1FF";
 
 type FigProps = {
-  /** Id unico por instancia (degradados). */
+  /** Unique id per instance (gradient ids). */
   id: string;
   accent: string;
 };
 
-/** Redondeo a centesimas: el servidor y el navegador no siempre dan los mismos decimales en
- *  seno y coseno, y la diferencia rompe la hidratacion. */
+/** Round to hundredths: server and browser do not always return the same decimals for sine
+ *  and cosine, and the difference breaks hydration. */
 const r2 = (n: number) => Math.round(n * 100) / 100;
 
 const delay = (s: number) => ({ animationDelay: `${s}s` }) as CSSProperties;
 
-/** Rectangulo sobre la cara frontal izquierda (plano y = Y): de x0 a x1 y de z0 a z1. */
+/** Rectangle on the front-left face (plane y = Y): from x0 to x1 and z0 to z1. */
 const faceY = (Y: number, x0: number, x1: number, z0: number, z1: number) =>
   poly([x0, Y, z0], [x1, Y, z0], [x1, Y, z1], [x0, Y, z1]);
 
-/** Rectangulo sobre la cara frontal derecha (plano x = X): de y0 a y1 y de z0 a z1. */
+/** Rectangle on the front-right face (plane x = X): from y0 to y1 and z0 to z1. */
 const faceX = (X: number, y0: number, y1: number, z0: number, z1: number) =>
   poly([X, y0, z0], [X, y1, z0], [X, y1, z1], [X, y0, z1]);
 
 /**
- * Lleva el plano del suelo a la altura z: dentro, se dibuja en 2D (u, v) y sale en isometrico.
- * Sirve para esferas, agujas y cualquier cosa que gire tumbada.
+ * Moves the ground plane to height z: draw inside it in 2D (u, v) and it comes out isometric.
+ * Use it for dials, needles and anything that lies flat or spins flat.
  */
 const plane = (z: number) => `matrix(0.866 0.5 -0.866 0.5 0 ${-z})`;
 
-/** Segmento entre dos puntos 3D. */
+/** Segment between two 3D points. */
 function Seg({ a, b, color, w = 1, o = 1, className }: { a: [number, number, number]; b: [number, number, number]; color: string; w?: number; o?: number; className?: string }) {
   const [x1, y1] = iso(...a);
   const [x2, y2] = iso(...b);
   return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={w} strokeOpacity={o} strokeLinecap="round" className={className} />;
 }
 
-/** Rack de servidor: cinco unidades con luces que parpadean y rejillas laterales. */
+/** Server rack: five units with blinking lights and side vents. */
 export function Server({ id, accent }: FigProps) {
   const a = 30;
   const b = 34;
@@ -61,11 +61,11 @@ export function Server({ id, accent }: FigProps) {
   return (
     <g>
       <IsoBox id={id} x={-a / 2} y={-b / 2} z={0} a={a} b={b} h={h} top={TOP} left={LEFT} right={RIGHT} edge={accent} />
-      {/* rejillas de ventilacion en el lateral */}
+      {/* side vents */}
       {[0, 1, 2, 3, 4, 5].map((j) => (
         <Seg key={j} a={[a / 2 + 0.05, -13 + j * 5, 9]} b={[a / 2 + 0.05, -13 + j * 5, h - 9]} color="#232327" w={1} />
       ))}
-      {/* unidades */}
+      {/* units */}
       {[0, 1, 2, 3, 4].map((i) => {
         const z0 = 4 + i * unit + 1.2;
         const z1 = z0 + unit - 2.4;
@@ -85,7 +85,7 @@ export function Server({ id, accent }: FigProps) {
   );
 }
 
-/** Base de datos: cilindro de tres discos cuyos anillos se encienden en secuencia. */
+/** Database: three-disc cylinder whose rings light up in sequence. */
 export function Database({ id, accent }: FigProps) {
   const r = 20;
   const h = 46;
@@ -121,12 +121,12 @@ export function Database({ id, accent }: FigProps) {
   );
 }
 
-/** Nube flotante con datos que bajan hasta su base. */
+/** Floating cloud with data flowing down to its base. */
 export function Cloud({ id, accent }: FigProps) {
   const base = 36;
   const [cx, cy] = iso(0, 0, base);
-  // Silueta en el plano de la pantalla: base redondeada y tres cumulos. El contorno sale de
-  // dibujar las piezas dos veces, primero algo mas grandes y en el color de acento.
+  // Silhouette in screen space: a rounded base and three puffs. The outline comes from drawing
+  // the pieces twice, first slightly larger and in the accent color.
   const pill = { x: -30, y: -4, w: 60, h: 18 };
   const bumps: [number, number, number][] = [
     [-14, -6, 11],
@@ -155,7 +155,7 @@ export function Cloud({ id, accent }: FigProps) {
           <stop offset="1" stopColor="#121215" />
         </linearGradient>
       </defs>
-      {/* base: un pequeno nodo en el suelo que recibe los datos */}
+      {/* base: a small node on the ground that receives the data */}
       <IsoBox id={id} x={-9} y={-9} z={0} a={18} b={18} h={4} top={TOP} left={LEFT} right={RIGHT} edge={accent} />
       {[-4, 4].map((o, i) => (
         <Seg key={o} a={[o, -o, 4]} b={[o, -o, base - 10]} color={HOT} w={1.2} className={i ? "iso-flow iso-flow-b" : "iso-flow"} />
@@ -163,7 +163,7 @@ export function Cloud({ id, accent }: FigProps) {
       <g className="iso-float-2">
         {shape(1.2, accent, 0.85)}
         {shape(0, `url(#${id}-puff)`)}
-        {/* brillo superior */}
+        {/* top highlight */}
         <path
           d={`M${cx - 6},${cy - 22} A15,15 0 0 1 ${cx + 12},${cy - 21}`}
           fill="none"
@@ -177,20 +177,20 @@ export function Cloud({ id, accent }: FigProps) {
   );
 }
 
-/** Monitor de escritorio con una interfaz en pantalla y teclado. */
+/** Desktop monitor with an interface on screen and a keyboard. */
 export function Monitor({ id, accent }: FigProps) {
   const Y = 6.1;
   return (
     <g>
-      {/* teclado */}
+      {/* keyboard */}
       <IsoBox id={`${id}-k`} x={-26} y={12} z={0} a={52} b={12} h={2} top="#202023" left={LEFT} right={RIGHT} />
       {[0, 1, 2].map((r) => (
         <polygon key={r} points={flat(-23, 13.6 + r * 3.4, 46, 2, 2.05)} fill="#2E2E32" />
       ))}
-      {/* pie y cuello */}
+      {/* foot and neck */}
       <IsoBox id={`${id}-b`} x={-12} y={-2} z={0} a={24} b={12} h={2} top={TOP} left={LEFT} right={RIGHT} />
       <IsoBox id={`${id}-n`} x={-2.5} y={-1} z={2} a={5} b={3} h={14} top={TOP} left={LEFT} right={RIGHT} />
-      {/* pantalla */}
+      {/* screen */}
       <IsoBox id={id} x={-30} y={2} z={14} a={60} b={4} h={38} top={TOP} left={LEFT} right={RIGHT} edge={accent} />
       <polygon points={faceY(Y, -27, 27, 17, 49)} fill="#0A0A0C" />
       <polygon points={faceY(Y, -27, 27, 46, 49)} fill="#1C1C1F" />
@@ -215,7 +215,7 @@ export function Monitor({ id, accent }: FigProps) {
   );
 }
 
-/** Portatil abierto con una terminal escribiendo. */
+/** Open laptop with a terminal typing. */
 export function Laptop({ id, accent }: FigProps) {
   const Y = -12.9;
   const rows = [30, 18, 26, 12];
@@ -228,7 +228,7 @@ export function Laptop({ id, accent }: FigProps) {
         <polygon key={r} points={flat(-22, -6.5 + r * 4, 44, 2.2, 3.1)} fill="#26262A" />
       ))}
       <polygon points={flat(-8, 9, 16, 7, 3.05)} fill="#1D1D20" />
-      {/* pantalla */}
+      {/* screen */}
       <IsoBox id={id} x={-28} y={-16} z={3} a={56} b={3} h={36} top={TOP} left={LEFT} right={RIGHT} />
       <polygon points={faceY(Y, -25, 25, 6, 36)} fill="#08080A" />
       {rows.map((w, r) => {
@@ -246,7 +246,7 @@ export function Laptop({ id, accent }: FigProps) {
   );
 }
 
-/** Chip de IA sobre su placa, con el nucleo latiendo. */
+/** AI chip on its board, with a pulsing core. */
 export function Chip({ id, accent }: FigProps) {
   const cells = [0, 1, 2].flatMap((r) => [0, 1, 2].map((c) => ({ r, c })));
   const [gx, gy] = iso(0, 0, 14);
@@ -259,7 +259,7 @@ export function Chip({ id, accent }: FigProps) {
         </radialGradient>
       </defs>
       <IsoBox id={`${id}-p`} x={-28} y={-28} z={0} a={56} b={56} h={4} top="#141416" left={LEFT} right={RIGHT} edge={accent} />
-      {/* patillas */}
+      {/* pins */}
       {[-14, -7, 0, 7, 14].map((p) => (
         <g key={p}>
           <Seg a={[18, p, 4.1]} b={[25, p, 4.1]} color="#4A4A4E" w={1.1} />
@@ -284,7 +284,7 @@ export function Chip({ id, accent }: FigProps) {
   );
 }
 
-/** Edificio corporativo: ventanas que se encienden piso a piso. */
+/** Office building: windows light up floor by floor. */
 export function Building({ id, accent }: FigProps) {
   const a = 26;
   const b = 26;
@@ -303,7 +303,7 @@ export function Building({ id, accent }: FigProps) {
         cols.map((c, ci) => {
           const z = 8 + r * 9;
           const i = r * 3 + ci;
-          // Algunas ventanas quedan encendidas siempre; al activarse se encienden todas.
+          // A few windows are always lit; when active, all of them light up.
           return (
             <g key={i}>
               <polygon
@@ -326,7 +326,7 @@ export function Building({ id, accent }: FigProps) {
   );
 }
 
-/** Plataforma en capas: al activarse, las capas se separan. */
+/** Layered platform: when active, the layers spread apart. */
 export function Layers({ id, accent }: FigProps) {
   return (
     <g>
@@ -361,7 +361,7 @@ export function Layers({ id, accent }: FigProps) {
   );
 }
 
-/** Medidor de rendimiento: esfera tumbada cuya aguja barre hasta el tope al activarse. */
+/** Performance gauge: a flat dial whose needle sweeps to the top when active. */
 export function Gauge({ id, accent }: FigProps) {
   const r = 30;
   const h = 7;
@@ -382,7 +382,7 @@ export function Gauge({ id, accent }: FigProps) {
       <ellipse cx={X} cy={Yt} rx={rx} ry={ry} fill="#1C1C1F" stroke={accent} strokeOpacity={0.6} strokeWidth={0.8} />
       <g transform={plane(h + 0.05)}>
         {Array.from({ length: 11 }, (_, k) => {
-          // Escala de 270 grados con el hueco mirando al frente (45 grados en el plano).
+          // 270-degree scale with the gap facing the viewer (45 degrees in the plane).
           const ang = ((90 + k * 27) * Math.PI) / 180;
           return (
             <line
@@ -417,9 +417,9 @@ export function Gauge({ id, accent }: FigProps) {
   );
 }
 
-/** Automatizacion: tres nodos enlazados por el suelo con datos que circulan. */
+/** Automation: three nodes linked on the ground with data flowing between them. */
 export function Flow({ id, accent }: FigProps) {
-  // Orden de dibujo: de atras (x + y menor) hacia delante.
+  // Draw order: back (smaller x + y) to front.
   const nodes: [number, number][] = [
     [4, -22],
     [-24, 8],
@@ -462,7 +462,7 @@ export function Flow({ id, accent }: FigProps) {
   );
 }
 
-/** Landing: dos paginas flotando; al activarse, las secciones de la delantera aparecen en orden. */
+/** Landing: two floating pages; when active, the front page sections appear in order. */
 export function Page({ id, accent }: FigProps) {
   const Y = 3.05;
   const sec = (i: number) => ({ className: "iso-sec", style: delay(i * 0.12) });
@@ -484,7 +484,7 @@ export function Page({ id, accent }: FigProps) {
   );
 }
 
-/** Panel de CMS: tablero con graficas; al activarse, las barras crecen. */
+/** CMS dashboard: a board with charts; when active, the bars grow. */
 export function Dashboard({ id, accent }: FigProps) {
   const z = 4;
   const bars = [10, 18, 13, 24, 16];
@@ -509,7 +509,7 @@ export function Dashboard({ id, accent }: FigProps) {
       {bars.map((h, i) => {
         const x = -12 + i * 8;
         const y = 6;
-        // La barra crece desde su base: el origen del escalado es la esquina frontal del pie.
+        // The bar grows from its base: the scale origin is the front corner of its foot.
         const [ox, oy] = iso(x + 5, y + 5, z);
         return (
           <g key={i} className="iso-bar" style={{ transformOrigin: `${r2(ox)}px ${r2(oy)}px`, transitionDelay: `${i * 0.08}s` }}>
@@ -532,13 +532,13 @@ export function Dashboard({ id, accent }: FigProps) {
   );
 }
 
-/** Pasarela de APIs: conmutador con puertos, luces y cables por los que salen datos. */
+/** API gateway: a switch with ports, lights and cables carrying data out. */
 export function Switch({ id, accent }: FigProps) {
   const Y = 12.05;
   const ports = [-26, -17, -8, 1, 10, 19];
   return (
     <g>
-      {/* cables: bajan del puerto al suelo y salen hacia delante */}
+      {/* cables: drop from the port to the ground and run toward the viewer */}
       {ports.map((px, i) => (
         <g key={`c${px}`}>
           <Seg a={[px + 3, Y, 3]} b={[px + 3, Y + 4, 0]} color="#3A3A3E" w={1.4} />
@@ -566,7 +566,7 @@ export function Switch({ id, accent }: FigProps) {
   );
 }
 
-/** Nucleo de IA: esfera luminosa sobre un pedestal, con datos en orbita. */
+/** AI core: a glowing sphere on a pedestal, with data in orbit. */
 export function Orb({ id, accent }: FigProps) {
   const pr = 14;
   const ph = 8;
@@ -600,7 +600,7 @@ export function Orb({ id, accent }: FigProps) {
       <path d={`M${X - rx},${Yt} L${X - rx},${Yb} A${rx},${ry} 0 0 0 ${X + rx},${Yb} L${X + rx},${Yt} Z`} fill={`url(#${id}-ped)`} />
       <ellipse cx={X} cy={Yt} rx={rx} ry={ry} fill="#1E1E21" stroke={accent} strokeOpacity={0.7} strokeWidth={0.8} />
       <circle cx={sx} cy={sy} r={24} fill={`url(#${id}-halo)`} className="iso-glow" />
-      {/* mitad trasera del anillo, la esfera y la mitad delantera */}
+      {/* back half of the ring, the sphere, then the front half */}
       <g transform={plane(zc)}>{ring(135)}</g>
       <circle cx={sx} cy={sy} r={13} fill={`url(#${id}-orb)`} className="iso-orb" />
       <g transform={plane(zc)}>
@@ -649,7 +649,7 @@ const FIGURES: Record<FigureKind, (p: FigProps) => ReactNode> = {
   orb: Orb,
 };
 
-/** Figura suelta lista para usar: luz de suelo debajo y la figura centrada. */
+/** Ready-to-use figure: floor light underneath and the figure centered. */
 export function Figure({ kind, id, accent = ACCENT }: { kind: FigureKind; id: string; accent?: string }) {
   const F = FIGURES[kind];
   return (
@@ -666,7 +666,7 @@ export function Figure({ kind, id, accent = ACCENT }: { kind: FigureKind; id: st
   );
 }
 
-/** Figura en su propio SVG, del tamano que marque className. */
+/** Figure in its own SVG, sized by className. */
 export default function IsoFigure({
   kind,
   id,
@@ -677,7 +677,7 @@ export default function IsoFigure({
   kind: FigureKind;
   id: string;
   accent?: string;
-  /** Activa: dispara la mini demo de la figura (reglas .fig-on de globals.css). */
+  /** Active: plays the figure mini demo (the .fig-on rules in iso-figures.css). */
   on?: boolean;
   className?: string;
 }) {

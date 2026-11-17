@@ -1,7 +1,7 @@
 import { iso, poly } from "./iso";
 
 type IsoBoxProps = {
-  /** Identificador unico (se usa para los degradados del borde iluminado). */
+  /** Unique id (used for the lit-edge gradients). */
   id: string;
   x: number;
   y: number;
@@ -12,11 +12,11 @@ type IsoBoxProps = {
   top: string;
   left: string;
   right: string;
-  /** Color de la luz puntual en la esquina frontal. Sin valor, no hay brillo. */
+  /** Color of the point light on the front corner. Without it, no glow. */
   edge?: string;
 };
 
-/** Bloque isometrico con tres caras: superior, izquierda y derecha. */
+/** Isometric block with three faces: top, left and right. */
 export default function IsoBox({ id, x, y, z, a, b, h, top, left, right, edge }: IsoBoxProps) {
   const zt = z + h;
   const C = iso(x + a, y + b, zt);

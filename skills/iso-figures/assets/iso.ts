@@ -1,4 +1,4 @@
-/** Proyeccion isometrica: x e y sobre el suelo, z hacia arriba. */
+/** Isometric projection: x and y on the ground, z up. */
 export const COS30 = 0.8660254;
 
 export type P3 = [number, number, number];
@@ -17,6 +17,6 @@ export const pt = (x: number, y: number, z: number) => {
 
 export const poly = (...p: P3[]) => p.map(([x, y, z]) => pt(x, y, z)).join(" ");
 
-/** Rectangulo plano (x, y, ancho, fondo) a la altura z, como puntos de polygon. */
+/** Flat rectangle (x, y, width, depth) at height z, as polygon points. */
 export const flat = (x: number, y: number, w: number, h: number, z: number) =>
   poly([x, y, z], [x + w, y, z], [x + w, y + h, z], [x, y + h, z]);
