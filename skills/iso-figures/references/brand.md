@@ -30,6 +30,14 @@ objects.
 | `glint` | Highlights and carets | Near white in both themes |
 | `deep` | Deep edge of the orb | A very dark version of the accent |
 
+## Light theme materials
+
+On light backgrounds, real objects use a material from `MATERIALS` (`graphite`, `aluminum`,
+`concrete`) instead of the plain light palette; `LIGHT_MATERIAL` maps each figure to one. Every
+material spreads `PALETTES.light`, so rebranding the light accent also reaches them, except
+`graphite`, which sets its own lighter `accent` so lights stay visible on black hardware. Adjust
+that one too when you change the brand.
+
 ## Per section
 
 The accent can be changed per instance with the `accent` prop. Use it to give one section a

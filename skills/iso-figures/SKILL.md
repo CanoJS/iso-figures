@@ -56,6 +56,22 @@ Every color comes from a `Palette` in `Figures.tsx`, by role. There are two them
 | `hot` | near-white pulses | dark violet pulses (white would vanish on white) |
 | `glint` | specular highlights and carets | white |
 
+**Materials on the light theme.** On a light page the figures do not all turn white: each object
+keeps the color it has in real life. `MATERIALS` holds palettes built on top of `light`, and
+`LIGHT_MATERIAL` assigns one per figure:
+
+| Material | Figures | Look |
+|---|---|---|
+| `graphite` | `server`, `database`, `switch`, `chip` | Black hardware, slightly lifted so it reads on white |
+| `aluminum` | `monitor`, `laptop` | Brushed silver with black keys |
+| `concrete` | `building` | Concrete top, blue-gray glass sides |
+| plain `light` | `cloud`, `page`, `dashboard`, `gauge`, `layers`, `flow`, `orb` | Interface and abstract pieces stay light |
+
+When you add a figure that is a real object, give it the material it would have in real life by
+adding it to `LIGHT_MATERIAL` (or create a new material, e.g. `wood`, from `PALETTES.light`). The
+mix of dark and light objects is what makes the light theme look realistic; avoid pages where
+every figure is white.
+
 Rules:
 - Never hardcode a color in a figure: use the palette role (`p.slot`, `p.detail`...). If no role
   fits, add one to `Palette` with a value for both themes.
@@ -189,7 +205,7 @@ Vocabulary in `iso-figures.css`. Reuse it before inventing keyframes:
 
 - [ ] Recognizable at 40 px.
 - [ ] Every color comes from the palette; only the accent (and the support accent) add hue.
-- [ ] Reads on both the dark and the light theme.
+- [ ] Reads on both the dark and the light theme, with a realistic material on light.
 - [ ] A single corner with a lit `edge`.
 - [ ] Fits the `viewBox` and weighs like its neighbors.
 - [ ] Drawn back to front, no pieces covering each other wrongly.
