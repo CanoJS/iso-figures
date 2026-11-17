@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc -p .",
-    "demo": "node scripts/build-demo.mjs"
+    "demo": "node scripts/build-demo.mjs",
+    "banner": "node scripts/build-banner.mjs"
   },
   "devDependencies": {
     "@types/react": "18.3.12",
