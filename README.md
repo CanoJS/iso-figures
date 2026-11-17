@@ -1,85 +1,102 @@
 # iso-figures
 
-Figuras isometricas en SVG para React y la skill que le ensena a Claude a dibujar figuras nuevas
-con el mismo estilo: bloques de grafito mate, una sola luz de acento y animaciones discretas.
+**English** · [Español](README.es.md)
 
-![Las 14 figuras del kit](docs/gallery.jpg)
+Isometric SVG figures for React, plus the skill that teaches Claude to draw new ones in the same
+style: matte blocks, a single accent light and quiet animations, for dark or light backgrounds.
 
-## Que incluye
+**[Live demo](https://canojs.github.io/iso-figures/)**
 
-- **14 figuras listas**: `server`, `database`, `cloud`, `monitor`, `laptop`, `chip`, `building`,
-  `layers`, `gauge`, `flow`, `page`, `dashboard`, `switch` y `orb`. Cada una tiene un estado en
-  reposo y una mini demo al activarse (la aguja barre, las barras crecen, las ventanas se
-  encienden...).
-- **Primitivas** para crear mas: proyeccion isometrica, bloques con borde iluminado, caras,
-  planos tumbados, segmentos.
-- **CSS de animacion** sin dependencias, con soporte para `prefers-reduced-motion`.
-- **La skill `iso-figures`**: marca, proyeccion, composicion, animacion, reglas tecnicas y flujo
-  de trabajo para que cada figura nueva encaje con las demas.
+![The 14 figures on the dark and light themes](docs/gallery.jpg)
 
-Solo necesita React. No usa Tailwind ni ninguna otra libreria.
+## What's inside
 
-## Instalar la skill
+- **14 ready figures**: `server`, `database`, `cloud`, `monitor`, `laptop`, `chip`, `building`,
+  `layers`, `gauge`, `flow`, `page`, `dashboard`, `switch` and `orb`. Each one has a rest state
+  and a mini demo when active (the needle sweeps, the bars grow, the windows light up...).
+- **Two themes**: `dark` for black or graphite backgrounds and `light` for white ones. Every color
+  comes from a role-based palette, so rebranding means changing one object.
+- **Primitives** to build more: isometric projection, blocks with a lit edge, faces, flat planes,
+  cylinders, segments.
+- **Animation CSS** with no dependencies, with `prefers-reduced-motion` support.
+- **The `iso-figures` skill**: brand, projection, composition, animation, technical rules and a
+  workflow so every new figure matches the rest. It also ships an eval suite.
 
-Pega esto en Claude:
+Only needs React. No Tailwind or any other library.
 
-```
-https://github.com/CanoJS/iso-figures
+## Install the skill
 
-Instala esta skill.
-```
-
-O como plugin, en Claude Code (2.1.275 o posterior):
+In Claude Code (2.1.275 or later):
 
 ```
 /plugin install iso-figures --marketplace CanoJS/iso-figures
 ```
 
-En versiones anteriores, en dos pasos:
+In older versions, in two steps:
 
 ```
 /plugin marketplace add CanoJS/iso-figures
 /plugin install iso-figures
 ```
 
-O a mano:
+Or paste this into Claude:
+
+```
+https://github.com/CanoJS/iso-figures
+
+Install this skill.
+```
+
+Or by hand:
 
 ```bash
 git clone https://github.com/CanoJS/iso-figures.git
 cp -r iso-figures/skills/iso-figures ~/.claude/skills/
 ```
 
-Para un solo proyecto, copiala en `.claude/skills/` de ese proyecto en lugar de `~/.claude/skills/`.
+For a single project, copy it into that project's `.claude/skills/` instead of `~/.claude/skills/`.
 
-## Usar las figuras
+## Use the figures
 
-Con la skill instalada, basta con pedirlo ("anade una figura isometrica de un servidor en la
-seccion de backend"). Si el proyecto no tiene el kit, Claude lo copia desde
-`skills/iso-figures/assets/`.
+With the skill installed, just ask ("add an isometric server figure to the backend section"). If
+the project does not have the kit yet, Claude copies it from `skills/iso-figures/assets/`.
 
-A mano: copia `iso.ts`, `IsoBox.tsx`, `Figures.tsx` e `iso-figures.css` de
-`skills/iso-figures/assets/` a tu proyecto, importa el CSS una vez y usa:
+By hand: copy `iso.ts`, `IsoBox.tsx`, `Figures.tsx` and `iso-figures.css` from
+`skills/iso-figures/assets/` into your project, import the CSS once and use:
 
 ```tsx
 import IsoFigure from "./components/iso/Figures";
 
 <IsoFigure kind="server" id="backend" className="h-24 w-24" />
-<IsoFigure kind="gauge" id="seo" on={activa} accent="#7DE3FF" className="h-24 w-24" />
+<IsoFigure kind="gauge" id="seo" theme="light" on={active} className="h-24 w-24" />
 ```
 
-- `id`: unico por figura en la pagina (los degradados lo usan como prefijo).
-- `accent`: color de la luz. Por defecto lila `#C9B1FF`.
-- `on`: activa la mini demo.
+| Prop | What it does |
+|---|---|
+| `kind` | Which figure |
+| `id` | Unique per figure on the page (gradient ids use it as a prefix) |
+| `theme` | `"dark"` (default) or `"light"` |
+| `accent` | Light color. Defaults to the theme accent |
+| `on` | Plays the mini demo |
+| `className` | Size and placement |
 
-Para cambiar la paleta entera a otra marca, sigue
-[`references/brand.md`](skills/iso-figures/references/brand.md). El catalogo con lo que hace cada
-figura esta en [`references/catalog.md`](skills/iso-figures/references/catalog.md).
+To rebrand, follow [`references/brand.md`](skills/iso-figures/references/brand.md). The catalog
+with what each figure does is in [`references/catalog.md`](skills/iso-figures/references/catalog.md).
 
-## Origen
+## Evals
 
-Las figuras nacieron para el portafolio de [Jesus Cano](https://github.com/CanoJS), un tema oscuro
-tipo Apple con la luz en violeta.
+`evals/` holds cases that check the skill produces on-brand figures (palette roles, both themes,
+reduced motion, hydration-safe math). Run them with:
 
-## Licencia
+```bash
+claude plugin eval .
+```
+
+## Origin
+
+The figures were born for the portfolio of [Jesus Cano](https://github.com/CanoJS), an
+Apple-style dark theme with a violet light.
+
+## License
 
 MIT
