@@ -14,8 +14,9 @@ style: matte blocks, a single accent light and quiet animations, for dark or lig
 - **14 ready figures**: `server`, `database`, `cloud`, `monitor`, `laptop`, `chip`, `building`,
   `layers`, `gauge`, `flow`, `page`, `dashboard`, `switch` and `orb`. Each one has a rest state
   and a mini demo when active (the needle sweeps, the bars grow, the windows light up...).
-- **Two themes**: `dark` for black or graphite backgrounds and `light` for white ones. Every color
-  comes from a role-based palette, so rebranding means changing one object.
+- **Two themes**: `dark` for black or graphite backgrounds and `light` for white ones. On light,
+  each object keeps a real-world material (graphite hardware, aluminum laptops, concrete
+  buildings). Every color comes from a role-based palette, so rebranding means changing one object.
 - **Primitives** to build more: isometric projection, blocks with a lit edge, faces, flat planes,
   cylinders, segments.
 - **Animation CSS** with no dependencies, with `prefers-reduced-motion` support.
@@ -91,6 +92,16 @@ reduced motion, hydration-safe math). Run them with:
 ```bash
 claude plugin eval .
 ```
+
+Latest run (1.1.0, one run per case, with and without the skill):
+
+| Case | With | Without |
+|---|---|---|
+| `new-figure`: draw a new figure on-brand | 1.00 | 0.00 |
+| `light-theme`: move figures to a white page | 1.00 | 0.00 |
+| `rebrand`: switch the palette to another brand | 1.00 | 0.25 |
+| `standalone`: place a figure inside another SVG | 1.00 | 0.00 |
+| `no-repeat`: avoid reusing a figure on one site | 1.00 | 1.00 |
 
 ## Origin
 

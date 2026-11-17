@@ -16,8 +16,10 @@ oscuros o claros.
   `layers`, `gauge`, `flow`, `page`, `dashboard`, `switch` y `orb`. Cada una tiene un estado en
   reposo y una mini demo al activarse (la aguja barre, las barras crecen, las ventanas se
   encienden...).
-- **Dos temas**: `dark` para fondos negros o grafito y `light` para fondos blancos. Todos los
-  colores salen de una paleta por roles, así que cambiar de marca es cambiar un objeto.
+- **Dos temas**: `dark` para fondos negros o grafito y `light` para fondos blancos. En el claro,
+  cada objeto conserva un material realista (hardware en grafito, portátiles de aluminio, edificios
+  de hormigón). Todos los colores salen de una paleta por roles, así que cambiar de marca es
+  cambiar un objeto.
 - **Primitivas** para crear más: proyección isométrica, bloques con borde iluminado, caras,
   planos tumbados, cilindros, segmentos.
 - **CSS de animación** sin dependencias, con soporte para `prefers-reduced-motion`.
@@ -97,6 +99,16 @@ paleta, ambos temas, menos movimiento, trigonometría segura para la hidratació
 ```bash
 claude plugin eval .
 ```
+
+Última ejecución (1.1.0, una pasada por caso, con y sin la skill):
+
+| Caso | Con | Sin |
+|---|---|---|
+| `new-figure`: dibujar una figura nueva fiel al estilo | 1.00 | 0.00 |
+| `light-theme`: llevar las figuras a una página blanca | 1.00 | 0.00 |
+| `rebrand`: cambiar la paleta a otra marca | 1.00 | 0.25 |
+| `standalone`: colocar una figura dentro de otro SVG | 1.00 | 0.00 |
+| `no-repeat`: no repetir figuras en un mismo sitio | 1.00 | 1.00 |
 
 ## Origen
 
