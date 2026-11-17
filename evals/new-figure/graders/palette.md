@@ -3,7 +3,7 @@ type: llm
 weight: 2
 ---
 
-The new figure takes its colors from the palette roles (for example `p.top`, `p.left`,
-`p.right`, `p.slot`, `p.detail`, `p.screen`) and the `accent` prop. It does not hardcode hex
-colors for faces or details. The only hue comes from the accent (and optionally the support
-accent `p.peri`): no green, red or other new colors.
+In the code, face and detail colors are passed as palette roles (for example `top={p.top}`,
+`fill={p.slot}`, `color={p.detail}`) or as the `accent` prop. Neutral values such as
+`fill="none"` are fine. It FAILS only if the figure hardcodes hex colors for its faces or details,
+or introduces a hue other than the accent and the support accent (`p.peri`), such as green or red.

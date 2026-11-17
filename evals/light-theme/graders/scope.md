@@ -3,5 +3,6 @@ type: llm
 weight: 1
 ---
 
-The answer stays small: it does not rewrite the figure components, and it explains that screens
-stay dark in the light theme on purpose (like real devices) if it mentions screens at all.
+The fix stays small: it adds the `theme="light"` prop to the existing usages. It does not propose
+rewriting the figure components, recoloring them with CSS filters (such as `invert`) or
+duplicating the figures in a second set of components.
