@@ -1,28 +1,13 @@
 // Builds docs/index.html, the live demo: renders every figure from the kit, on both themes, to
 // static SVG and wraps them in a page that plays each mini demo on hover or in turn.
 // Run with `npm run demo`.
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import ts from "typescript";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { loadKit, root } from "./kit.mjs";
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const assets = join(root, "skills/iso-figures/assets");
-const build = join(root, ".demo-build");
-mkdirSync(build, { recursive: true });
-
-// Transpile the kit to plain ES modules (Node needs explicit .js extensions).
-for (const file of ["iso.ts", "IsoBox.tsx", "Figures.tsx"]) {
-  const { outputText } = ts.transpileModule(readFileSync(join(assets, file), "utf8"), {
-    compilerOptions: { jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 },
-  });
-  const js = outputText.replace(/from "\.\/(iso|IsoBox)"/g, 'from "./$1.js"');
-  writeFileSync(join(build, file.replace(/\.tsx?$/, ".js")), js);
-}
-
-const { default: IsoFigure } = await import(pathToFileURL(join(build, "Figures.js")).href);
+const { default: IsoFigure, css } = await loadKit();
 
 const KINDS = [
   ["server", "Backend, hosting"],
@@ -50,8 +35,6 @@ const grid = (theme) =>
         <p class="fits">${fits}</p>
       </li>`,
   ).join("");
-
-const css = readFileSync(join(assets, "iso-figures.css"), "utf8");
 
 const html = `<!doctype html>
 <html lang="en">
