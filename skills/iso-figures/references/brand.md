@@ -1,42 +1,37 @@
-# Adaptar la paleta a otra marca
+# Adapting the palette to another brand
 
-El kit viene con una marca oscura de tono violeta: grafitos tipo Apple y una luz lila. Para
-llevarlo a otra marca solo hay que tocar unos pocos valores. La estructura de luz (caras en tres
-tonos, una sola luz de acento) se mantiene: es lo que hace que las figuras se lean como objetos.
+The kit ships with two themes in `PALETTES` (`Figures.tsx`): `dark` for black or graphite
+backgrounds and `light` for white or near-white ones. Both use a lilac/violet accent. To bring the
+figures to another brand, change values in those palettes, not in the figures. The light
+structure (three face tones, one accent light) stays: it is what makes the figures read as
+objects.
 
-## Valores que cambiar
+## Pick the theme
 
-En `Figures.tsx`, al principio del archivo:
+| Background | Theme |
+|---|---|
+| `#000` to `#1D1D1F` | `dark` |
+| `#FFFFFF` to `#F5F5F7` | `light` |
+| Mid grays or colored backgrounds | Start from the closest theme and adjust the faces until the three tones read against the background |
 
-| Constante | Valor por defecto | Papel |
+## Values to change
+
+| Role | What it is | How to choose it |
 |---|---|---|
-| `TOP` | `#2A2A2D` | Cara superior: la mas clara de las tres |
-| `LEFT` | `#0E0E10` | Cara izquierda: la mas oscura |
-| `RIGHT` | `#18181A` | Cara derecha: tono intermedio |
-| `ACCENT` | `#C9B1FF` | Luz principal cuando no se pasa `accent` |
-| `PERI` | `#7D8BFF` | Acento de apoyo |
-| `HOT` | `#F1E8FF` | Pulsos y puntos calientes: el acento casi blanco |
+| `top`, `right`, `left` | The three faces | Three tones of the same gray. Top lightest, left darkest. Starting ratio: `left` at ~40 % of `top`'s lightness and `right` at ~60 % (dark theme); on light, `left` and `right` about 20 % and 12 % darker than `top` |
+| `topHi`, `topLow`, `plate` | Highlighted top, low tops (boards, keyboards), base plates | Small steps around `top` |
+| `slot`, `key`, `line`, `detail`, `vent` | Recesses and details | On dark, lighter than the face; on light, darker. Keep the order `slot` < `key` < `line` < `detail` in contrast |
+| `screen`, `screenBar`, `screenLine`, `ink` | Screens and their content | Keep screens dark in both themes |
+| `cylA`, `cylB`, `cylC`, `cap`, `shade` | Cylinders | Edge, center, edge of the body; `cap` close to `top` |
+| `puffA`, `puffB` | Cloud gradient | Top and bottom of the cloud |
+| `accent` | Main light | A saturated color that stands out on the faces. On dark, light and saturated (`#C9B1FF`, `#7DE3FF`, `#FFC46B`); on light, darker (`#7C5CFF`, `#0091C7`, `#D98200`). Check that a 2 px light is visible on `left` |
+| `peri` | Support accent | A neighbor of the accent on the color wheel (lilac with lavender blue, cyan with teal). Never its complement: two opposite lights break the single light source |
+| `hot` | Pulses on lines | On dark, the accent mixed with ~90 % white; on light, a darker accent |
+| `glint` | Highlights and carets | Near white in both themes |
+| `deep` | Deep edge of the orb | A very dark version of the accent |
 
-Los grises de detalle (`#0A0A0C` a `#4A4A4E`) estan escritos en cada figura. En un tema oscuro
-neutro sirven tal cual. Si cambias a grafitos calidos o frios, sustituyelos con
-"buscar y reemplazar" manteniendo el orden de claridad.
+## Per section
 
-## Como elegir los valores
-
-- **Caras**: tres tonos del mismo gris, separados lo justo para leer el volumen. Proporcion de
-  partida: `LEFT` al 40 % de la luminosidad de `TOP` y `RIGHT` al 60 %.
-- **Fondo**: las figuras estan pensadas para fondo negro o grafito muy oscuro (`#000` a `#1D1D1F`).
-  Sobre fondo claro, las caras tendrian que invertirse (superior blanca, laterales grises) y el
-  acento oscurecerse: es otro estilo, no solo otra paleta.
-- **Acento**: un color saturado y claro que destaque sobre grafito (lila `#C9B1FF`, cian
-  `#7DE3FF`, ambar `#FFC46B`...). Comprueba que una luz de 2 px se ve sobre `LEFT`.
-- **Acento de apoyo**: vecino del principal en el circulo cromatico (lila con azul lavanda, cian
-  con verde agua). Nunca complementario: dos luces opuestas rompen la sensacion de una sola
-  fuente de luz.
-- **HOT**: el acento mezclado con mucho blanco (90 % blanco).
-
-## Por seccion
-
-El acento se puede cambiar por instancia con la prop `accent`. Usalo para dar a una seccion un
-segundo tono de la marca (por ejemplo, las figuras de datos en el acento de apoyo), no para
-pintar cada figura de un color.
+The accent can be changed per instance with the `accent` prop. Use it to give one section a
+second brand tone (for example, data figures in the support accent), not to paint every figure a
+different color.

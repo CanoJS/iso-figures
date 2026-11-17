@@ -1,30 +1,30 @@
-# Catalogo de figuras
+# Figure catalog
 
-Las 14 figuras de `Figures.tsx`. Todas aceptan `id` y `accent`; con `on` en `IsoFigure` hacen su
-mini demo.
+The 14 figures in `Figures.tsx`. All of them take `id`, `accent` and a theme; with `on` on
+`IsoFigure` they play their mini demo.
 
-| `kind` | Que es | En reposo | Al activarse (`on`) | Encaja con |
+| `kind` | What it is | At rest | When active (`on`) | Fits |
 |---|---|---|---|---|
-| `server` | Rack de cinco unidades | Luces que parpadean desfasadas | Las luces parpadean rapido | Backend, hosting, infraestructura |
-| `database` | Cilindro de tres discos | Anillos que se encienden en secuencia | (igual que en reposo) | Datos, almacenamiento, SQL |
-| `cloud` | Nube flotante sobre un nodo | Datos que bajan al nodo, la nube flota | Los datos bajan mas rapido | Cloud, despliegue, SaaS |
-| `monitor` | Monitor con interfaz, pie y teclado | Cursor que parpadea | (igual que en reposo) | Frontend, escritorio, interfaz |
-| `laptop` | Portatil con una terminal | Cursor que parpadea | (igual que en reposo) | Herramientas, desarrollo, CLI |
-| `chip` | Chip sobre su placa | Celdas del nucleo que laten | El nucleo late rapido | Hardware, rendimiento, IA |
-| `building` | Edificio de oficinas | Algunas ventanas encendidas | Todas las ventanas se encienden piso a piso | Empresas, sitios corporativos |
-| `layers` | Tres capas apiladas | Quietas | Las capas se separan | Plataformas, arquitectura por capas |
-| `gauge` | Medidor tumbado con aguja | Aguja en reposo | La aguja barre y el arco se llena | Rendimiento, SEO, metricas |
-| `flow` | Tres nodos enlazados | Datos que circulan por los enlaces | Los datos circulan rapido | Automatizacion, integraciones, flujos |
-| `page` | Dos paginas flotando | Flotan | Las secciones aparecen en orden | Landing pages, contenido web |
-| `dashboard` | Tablero con barras y grafica | Barras bajas | Las barras crecen | CMS, analitica, paneles |
-| `switch` | Conmutador con puertos y cables | Luces y datos por los cables | Las luces parpadean rapido | APIs, redes, conectividad |
-| `orb` | Esfera luminosa con datos en orbita | Orbita lenta, halo que respira | La esfera se aviva | IA, asistentes, modelos |
+| `server` | Five-unit rack | Lights blinking out of step | Lights blink fast | Backend, hosting, infrastructure |
+| `database` | Three-disc cylinder | Rings light up in sequence | (same as rest) | Data, storage, SQL |
+| `cloud` | Floating cloud over a node | Data flows down to the node, the cloud floats | Data flows faster | Cloud, deployment, SaaS |
+| `monitor` | Monitor with an interface, foot and keyboard | Blinking cursor | (same as rest) | Frontend, desktop, UI |
+| `laptop` | Laptop with a terminal | Blinking cursor | (same as rest) | Tools, development, CLI |
+| `chip` | Chip on its board | Core cells pulse | The core pulses fast | Hardware, performance, AI |
+| `building` | Office building | A few windows lit | All windows light up floor by floor | Companies, corporate sites |
+| `layers` | Three stacked layers | Still | The layers spread apart | Platforms, layered architecture |
+| `gauge` | Flat dial with a needle | Needle at rest | The needle sweeps and the arc fills | Performance, SEO, metrics |
+| `flow` | Three linked nodes | Data flows along the links | Data flows fast | Automation, integrations, workflows |
+| `page` | Two floating pages | Floating | Sections appear in order | Landing pages, web content |
+| `dashboard` | Board with bars and a line chart | Short bars | The bars grow | CMS, analytics, admin panels |
+| `switch` | Switch with ports and cables | Lights and data along the cables | Lights blink fast | APIs, networking, connectivity |
+| `orb` | Glowing sphere with orbiting data | Slow orbit, breathing halo | The sphere brightens | AI, assistants, models |
 
-## Combinaciones probadas
+## Proven combinations
 
-- **Diagrama de arquitectura**: `server`, `database` y `cloud` en fila, enlazados por una linea
-  con un pulso `iso-flow` a media altura.
-- **Pila de capas**: figuras pequenas (`scale(0.6)`) en los bordes frontales de una plataforma
-  `IsoBox`, la unica franja que no tapa la capa de encima.
-- **Cuadricula de servicios**: una figura distinta por tarjeta y un foco que pasa de una a otra
-  activando `on` cada ~2 s.
+- **Architecture diagram**: `server`, `database` and `cloud` in a row, linked by a line at mid
+  height carrying an `iso-flow` pulse.
+- **Layer stack**: small figures (`scale(0.6)`) on the front edges of an `IsoBox` platform, the
+  only strip the layer above does not cover.
+- **Services grid**: a different figure per card and a highlight that moves from one to the next,
+  turning `on` every ~2 s.
