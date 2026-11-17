@@ -29,7 +29,13 @@ https://github.com/CanoJS/iso-figures
 Instala esta skill.
 ```
 
-O como plugin, en Claude Code:
+O como plugin, en Claude Code (2.1.275 o posterior):
+
+```
+/plugin install iso-figures --marketplace CanoJS/iso-figures
+```
+
+En versiones anteriores, en dos pasos:
 
 ```
 /plugin marketplace add CanoJS/iso-figures
