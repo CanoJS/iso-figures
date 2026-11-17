@@ -1,11 +1,39 @@
-# iso-figures
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
+    <img src="assets/banner-dark.svg" alt="iso-figures: isometric SVG figures for React, and a Claude skill that draws new ones" width="100%">
+  </picture>
+</p>
 
-**English** · [Español](README.es.md)
+<p align="center">
+  <em>Matte blocks, a single accent light, quiet animations. Dark or light.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/CanoJS/iso-figures/releases"><img src="https://img.shields.io/github/v/release/CanoJS/iso-figures?style=flat-square&color=7C5CFF&label=release" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-7C5CFF?style=flat-square" alt="MIT license"></a>
+  <a href="https://canojs.github.io/iso-figures/"><img src="https://img.shields.io/badge/demo-live-7C5CFF?style=flat-square" alt="Live demo"></a>
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin-7C5CFF?style=flat-square" alt="Claude Code plugin">
+  <img src="https://img.shields.io/badge/React-18%2B-7C5CFF?style=flat-square" alt="React 18+">
+</p>
+
+<p align="center">
+  <strong>14 figures &middot; 2 themes &middot; 0 dependencies beyond React &middot; evals 5/5 with the skill vs 1/5 without</strong>
+</p>
+
+<p align="center">
+  <a href="https://canojs.github.io/iso-figures/"><strong>Live demo</strong></a> &middot;
+  <a href="#install-the-skill">Install</a> &middot;
+  <a href="#use-the-figures">Use</a> &middot;
+  <a href="skills/iso-figures/references/catalog.md">Catalog</a> &middot;
+  <a href="README.es.md">Español</a>
+</p>
+
+---
 
 Isometric SVG figures for React, plus the skill that teaches Claude to draw new ones in the same
-style: matte blocks, a single accent light and quiet animations, for dark or light backgrounds.
-
-**[Live demo](https://canojs.github.io/iso-figures/)**
+style. Every figure is plain SVG with a rest animation and a mini demo when active, and reads on
+dark and light pages.
 
 ![The 14 figures on the dark and light themes](docs/gallery.jpg)
 
@@ -24,6 +52,16 @@ style: matte blocks, a single accent light and quiet animations, for dark or lig
   workflow so every new figure matches the rest. It also ships an eval suite.
 
 Only needs React. No Tailwind or any other library.
+
+## What you can ask
+
+Once the skill is installed, talk to Claude as you would to a designer who knows the kit:
+
+- *"Add an isometric firewall figure to the security section."*
+- *"Our site is moving to a white background, switch the figures."*
+- *"Rebrand the figures to our teal, #14B8A6."*
+- *"Put a small database on top of this isometric platform."*
+- *"Give the pricing cards a figure each, without repeating any."*
 
 ## Install the skill
 

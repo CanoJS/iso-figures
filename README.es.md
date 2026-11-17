@@ -1,12 +1,39 @@
-# iso-figures
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
+    <img src="assets/banner-dark.svg" alt="iso-figures: figuras isométricas en SVG para React y una skill de Claude que dibuja figuras nuevas" width="100%">
+  </picture>
+</p>
 
-[English](README.md) · **Español**
+<p align="center">
+  <em>Bloques mate, una sola luz de acento, animaciones discretas. Oscuro o claro.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/CanoJS/iso-figures/releases"><img src="https://img.shields.io/github/v/release/CanoJS/iso-figures?style=flat-square&color=7C5CFF&label=release" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-7C5CFF?style=flat-square" alt="Licencia MIT"></a>
+  <a href="https://canojs.github.io/iso-figures/"><img src="https://img.shields.io/badge/demo-live-7C5CFF?style=flat-square" alt="Demo en vivo"></a>
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin-7C5CFF?style=flat-square" alt="Plugin de Claude Code">
+  <img src="https://img.shields.io/badge/React-18%2B-7C5CFF?style=flat-square" alt="React 18+">
+</p>
+
+<p align="center">
+  <strong>14 figuras &middot; 2 temas &middot; sin dependencias aparte de React &middot; evals 5/5 con la skill frente a 1/5 sin ella</strong>
+</p>
+
+<p align="center">
+  <a href="https://canojs.github.io/iso-figures/"><strong>Demo en vivo</strong></a> &middot;
+  <a href="#instalar-la-skill">Instalar</a> &middot;
+  <a href="#usar-las-figuras">Usar</a> &middot;
+  <a href="skills/iso-figures/references/catalog.md">Catálogo</a> &middot;
+  <a href="README.md">English</a>
+</p>
+
+---
 
 Figuras isométricas en SVG para React y la skill que le enseña a Claude a dibujar figuras nuevas
-con el mismo estilo: bloques mate, una sola luz de acento y animaciones discretas, para fondos
-oscuros o claros.
-
-**[Demo en vivo](https://canojs.github.io/iso-figures/)**
+con el mismo estilo. Cada figura es SVG puro, con una animación en reposo y una mini demo al
+activarse, y se lee bien en páginas oscuras y claras.
 
 ![Las 14 figuras en los temas oscuro y claro](docs/gallery.jpg)
 
@@ -29,6 +56,16 @@ oscuros o claros.
 Solo necesita React. No usa Tailwind ni ninguna otra librería.
 
 La skill está escrita en inglés para que sirva a cualquiera, pero Claude te responde en tu idioma.
+
+## Qué le puedes pedir
+
+Con la skill instalada, háblale a Claude como a un diseñador que conoce el kit:
+
+- *"Añade una figura isométrica de un firewall en la sección de seguridad."*
+- *"Vamos a pasar el sitio a fondo blanco, cambia las figuras."*
+- *"Pasa las figuras a nuestro color, el teal #14B8A6."*
+- *"Coloca una base de datos pequeña encima de esta plataforma isométrica."*
+- *"Pon una figura en cada tarjeta de precios, sin repetir ninguna."*
 
 ## Instalar la skill
 
