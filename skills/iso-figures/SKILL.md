@@ -1,191 +1,200 @@
 ---
 name: iso-figures
-description: Crea, retoca y anima figuras isometricas en SVG para React (servidores, nubes, bases de datos, PCs, chips, paneles, edificios...) con un estilo oscuro y una sola luz de acento. Usala siempre que haya que dibujar una figura isometrica nueva, ajustar una existente, colocarla en una seccion de la web o darle animacion o una mini demo al activarse.
+description: Create, tweak and animate isometric SVG figures for React (servers, clouds, databases, PCs, chips, dashboards, buildings...) in a matte style with a single accent light, for dark or light backgrounds. Use it whenever an isometric figure has to be drawn, adjusted, placed in a section of a site, themed, or given an animation or an active-state mini demo.
 ---
 
-# Figuras isometricas
+# Isometric figures
 
-Las figuras comparten un mismo lenguaje: bloques de grafito mate, una sola luz de acento y
-detalles finos que se animan en silencio. Una figura nueva tiene que parecer de la misma familia
-que las que ya existen: si dudas, abre dos o tres (`Server`, `Dashboard`, `Orb`) y copia su forma
-de hacer.
+All figures share one language: matte blocks, a single accent light and fine details that
+animate quietly. A new figure must look like part of the same family. When in doubt, open two
+or three existing ones (`Server`, `Dashboard`, `Orb`) and copy how they are built.
 
-## 0. Preparar el proyecto
+Reply to the user in their own language; these instructions are in English only so they work for
+everyone.
 
-Busca si el proyecto ya tiene el kit (`grep -rln "export function Server" --include=*.tsx .`).
-Si no lo tiene:
+## 0. Set up the project
 
-1. Copia los cuatro archivos de `assets/` (junto a este SKILL.md) a una carpeta del proyecto,
-   por ejemplo `components/iso/`: `iso.ts`, `IsoBox.tsx`, `Figures.tsx` e `iso-figures.css`.
-2. Importa `iso-figures.css` una vez en el CSS o layout global.
-3. En Next.js con App Router, las figuras son SVG puros y funcionan en componentes de servidor y
-   de cliente. Solo el componente que decide cuando estan activas (`on`) necesita `"use client"`.
-4. Ajusta la paleta a la marca del proyecto siguiendo `references/brand.md`.
+Check whether the project already has the kit (`grep -rln "export function Server" --include=*.tsx .`).
+If it does not:
 
-Uso basico:
+1. Copy the four files in `assets/` (next to this SKILL.md) into a project folder, for example
+   `components/iso/`: `iso.ts`, `IsoBox.tsx`, `Figures.tsx` and `iso-figures.css`.
+2. Import `iso-figures.css` once in the global CSS or layout.
+3. In the Next.js App Router the figures are plain SVG and work in server and client components.
+   Only the component that decides when a figure is active (`on`) needs `"use client"`.
+4. Pick the theme that matches the background (section 1) and adapt the palette to the brand
+   with `references/brand.md`.
+
+Basic usage:
 
 ```tsx
 import IsoFigure from "@/components/iso/Figures";
 
 <IsoFigure kind="server" id="hero-server" className="h-24 w-24" />
-<IsoFigure kind="gauge" id="seo" on={activa} accent="#C9B1FF" className="h-24 w-24" />
+<IsoFigure kind="gauge" id="seo" theme="light" on={active} className="h-24 w-24" />
 ```
 
-Para colocar una figura suelta dentro de otro SVG isometrico, usa su componente con nombre y
-llevala a su sitio: `<g transform={`translate(${px} ${py}) scale(0.6)`}><Server id="s1" accent={c} /></g>`,
-con `[px, py] = iso(x, y, z)`.
+To place a single figure inside another isometric SVG, use its named component and move it into
+place: `<g transform={`translate(${px} ${py}) scale(0.6)`}><Server id="s1" accent={c} p={PALETTES.dark} /></g>`,
+with `[px, py] = iso(x, y, z)`.
 
-El catalogo de las 14 figuras, con su demo y cuando usar cada una, esta en
-`references/catalog.md`.
+`references/catalog.md` lists the 14 figures, what their demo does and when to use each one.
 
-## 1. Marca
+## 1. Brand and themes
 
-Superficies solidas y mate. Nada de vidrio, desenfoques de fondo ni degradados de colores.
+Solid, matte surfaces. No glass, no backdrop blur, no multicolor gradients.
 
-| Uso | Constante en Figures.tsx |
+Every color comes from a `Palette` in `Figures.tsx`, by role. There are two themes:
+
+| Role | `dark` (default, for `#000` to `#1D1D1F` backgrounds) | `light` (for white to `#F5F5F7` backgrounds) |
+|---|---|---|
+| `top` / `right` / `left` faces | graphite, lightest on top, darkest on the left | white top, light grays on the sides |
+| `slot`, `key`, `line`, `detail`, `vent` | recesses and details lighter than the face | recesses and details darker than the face |
+| `screen`, `screenBar`, `screenLine`, `ink` | dark | dark too: screens stay dark like real devices |
+| `accent` | lilac `#C9B1FF` | violet `#7C5CFF` (darker, so it reads on white) |
+| `peri` | support accent | support accent |
+| `hot` | near-white pulses | dark violet pulses (white would vanish on white) |
+| `glint` | specular highlights and carets | white |
+
+Rules:
+- Never hardcode a color in a figure: use the palette role (`p.slot`, `p.detail`...). If no role
+  fits, add one to `Palette` with a value for both themes.
+- One light per figure: the accent. The support accent only as a second tone (every other LED,
+  one ring). No other hues (no "online" green, no red).
+- Use the accent sparingly: one lit edge, a screen, a bar, a few lights. If the whole figure
+  glows, it stops reading as an object.
+- No text inside figures. Screens and panels carry abstract content (bars, blocks, dots).
+
+## 2. Projection and coordinates
+
+`iso(x, y, z)` returns `[(x - y) * 0.866, (x + y) / 2 - z]`.
+- `x` goes down-right, `y` goes down-left, `z` goes up.
+- Three faces of any box are visible: the top, the left (plane `y = y + b`, facing front-left)
+  and the right (plane `x = x + a`, facing front-right).
+- Each figure is drawn around the ground origin `(0, 0, 0)`, centered on `x` and `y`.
+
+## 3. Primitives (do not reinvent them)
+
+| Primitive | Use |
 |---|---|
-| Cara superior | `TOP` (destacada `#2E2E32`; bases oscuras `#1F1F22`, `#141416`) |
-| Cara izquierda (en sombra) | `LEFT` |
-| Cara derecha (media luz) | `RIGHT` |
-| Rebajes, ranuras, pantallas | `#0A0A0C` a `#1C1C1F` |
-| Trazos finos y bordes | `#2C2C2F` a `#4A4A4E` |
-| Acento principal | prop `accent` (por defecto `ACCENT`) |
-| Acento de apoyo | `PERI` |
-| Punto caliente, pulsos | `HOT` |
+| `IsoBox` | Any block. With `edge={accent}` it lights the front top corner: keep it for the main piece |
+| `flat(x, y, w, h, z)` | Flat rectangle on a top face |
+| `faceY(Y, x0, x1, z0, z1)` | Rectangle on the left face (screens, ports, windows) |
+| `faceX(X, y0, y1, z0, z1)` | Rectangle on the right face |
+| `plane(z)` | Transform that moves the ground plane to height `z`: draw inside in 2D and it comes out isometric. For flat circles, dials, needles, orbits |
+| `Seg` | 3D segment (cables, vents, antennas) |
+| `cylinder(id, p, X, Yt, Yb, rx, ry)` | Cylinder body with its gradient. `rx = 1.2247 r`, `ry = 0.7071 r`; add the top ellipse yourself |
+| `delay(s)` | Animation delay to stagger lights |
+| `r2(n)` | Mandatory rounding for anything computed with sine or cosine |
 
-Reglas:
-- Una sola luz por figura: el acento. El acento de apoyo solo como segundo tono (una luz de cada
-  dos, un anillo). Ningun otro color (ni verde de "online" ni rojo).
-- El acento se usa poco: un borde iluminado, una pantalla, una barra, unas luces. Si la figura
-  entera brilla, deja de leerse como objeto.
-- Nada de texto dentro de las figuras: pantallas y paneles llevan contenido abstracto (barras,
-  bloques, puntos).
+Details on a face sit `0.05` outside it (`Y = b / 2 + 0.05`, `z + 0.05`) so they do not flicker
+against the face.
 
-## 2. Proyeccion y coordenadas
+## 4. Composition
 
-`iso(x, y, z)` devuelve `[(x - y) * 0.866, (x + y) / 2 - z]`.
-- `x` va hacia abajo a la derecha, `y` hacia abajo a la izquierda, `z` hacia arriba.
-- De cualquier caja se ven tres caras: la superior, la izquierda (plano `y = y + b`, mira al
-  frente izquierdo) y la derecha (plano `x = x + a`, mira al frente derecho).
-- Cada figura se dibuja alrededor del origen del suelo `(0, 0, 0)`, centrada en `x` e `y`.
+- **Size**: the figure must fit `IsoFigure`'s `viewBox` (`-56 -86 112 122`). In practice: a
+  footprint up to ~60 x 60 units and a height up to ~70. Compare with `Server` (30 x 34 x 62) or
+  `Dashboard` (60 x 44 x 4) so all figures weigh about the same in a grid.
+- **Silhouette first**: it must be recognizable at 40 px. One clear main volume and one or two
+  secondary ones (foot, pedestal, node). If it does not read when small, simplify.
+- **Draw order**: back to front. Between pieces, smaller `x + y` first; at the same position,
+  bottom to top. Whatever sits behind the main piece (cables on the ground, the back half of a
+  ring) is drawn before it.
+- **Measured detail**: 3 to 6 repeated elements (rack units, ports, windows, bars) give scale.
+  More becomes noise.
+- **Floating**: pieces that do not touch the ground (`Cloud`, `Page`) go in
+  `<g className="iso-float-2">`, with a small node on the ground to anchor them if needed.
+- **Floor light**: `Figure` already draws it (a radial ellipse in the accent). Do not add another.
+- **No repeats**: on one site, each figure has a single place. Before reusing one, search where it
+  appears (`grep -rn "kind=\|kind:" .`). If another section already uses it, create a new one.
+- **Check both themes**: a new figure must read on dark and on light backgrounds.
 
-## 3. Primitivas (no reinventes)
+## 5. Animation
 
-| Primitiva | Para que |
+Vocabulary in `iso-figures.css`. Reuse it before inventing keyframes:
+
+| Class | Effect |
 |---|---|
-| `IsoBox` | Cualquier bloque. Con `edge={accent}` pinta la luz en la esquina frontal superior: reservala para la pieza principal |
-| `flat(x, y, w, h, z)` | Rectangulo tumbado sobre una cara superior |
-| `faceY(Y, x0, x1, z0, z1)` | Rectangulo sobre la cara izquierda (pantallas, puertos, ventanas) |
-| `faceX(X, y0, y1, z0, z1)` | Rectangulo sobre la cara derecha |
-| `plane(z)` | Transform que lleva el suelo a la altura `z`: dentro se dibuja en 2D y sale en isometrico. Para circulos tumbados, esferas de reloj, agujas, orbitas |
-| `Seg` | Segmento 3D (cables, rejillas, antenas) |
-| Cilindro | Copia el patron de `Database` o `Gauge`: `rx = 1.2247 r`, `ry = 0.7071 r`, cuerpo con degradado horizontal y elipse superior |
-| `delay(s)` | Retraso de animacion para escalonar luces |
-| `r2(n)` | Redondeo obligatorio para todo lo calculado con seno o coseno |
+| `iso-led` | Blinking light (stagger with `delay`) |
+| `iso-ring` | Stroke that rises and falls in intensity |
+| `iso-cell` | Pulsing cell |
+| `iso-glow` | Breathing halo |
+| `iso-flow` / `iso-flow-b` | Pulse traveling along a line (`-b` is offset) |
+| `iso-win` / `iso-win lit` | Window off / on |
+| `iso-sec` | Content block that appears |
+| `iso-bar` | Bar that grows from its base (`transformOrigin` on the front corner of its foot, with `r2`) |
+| `iso-lay-1`, `iso-lay-2` | Layers that spread apart |
+| `iso-needle`, `iso-gauge-arc` | Needle that sweeps and arc that fills |
+| `iso-orbit` | Continuous spin inside `plane()` |
+| `iso-float-1/2/3` | Slow floating |
+| `caret` | Blinking cursor |
 
-Los detalles sobre una cara van desplazados `0.05` fuera de ella (`Y = b / 2 + 0.05`,
-`z + 0.05`) para que no parpadeen contra la cara.
+- **Rest**: minimal, slow motion (lights, flow). The figure must not grab attention on its own.
+- **Mini demo**: `IsoFigure` takes `on` and adds `fig-on` to the SVG. Write the demo as
+  `.fig-on .your-class { ... }` rules: something that tells what the object does (the needle
+  sweeps, the bars grow, the windows light up). Keep it under ~1.5 s so it fits a carousel or a
+  highlight that moves from card to card.
+- Prefer a `transition` between rest and `fig-on` over changing a running animation's duration:
+  changing the duration of a spin makes it jump.
+- **Reduced motion**: every new continuous animation goes into the
+  `@media (prefers-reduced-motion: reduce)` block with `animation: none`.
 
-## 4. Composicion
+## 6. Technical rules
 
-- **Tamano**: la figura tiene que caber en el `viewBox` de `IsoFigure` (`-56 -86 112 122`). En la
-  practica: huella de hasta ~60 x 60 unidades y altura de hasta ~70. Compara con `Server`
-  (30 x 34 x 62) o `Dashboard` (60 x 44 x 4) para que todas pesen parecido en una cuadricula.
-- **Silueta primero**: tiene que reconocerse en 40 px. Un volumen principal claro y uno o dos
-  secundarios (pie, pedestal, nodo). Si al reducirla no se entiende, simplifica.
-- **Orden de dibujo**: de atras hacia delante. Entre piezas, menor `x + y` primero; a igual
-  posicion, de abajo arriba. Lo que va detras de la pieza principal (cables al suelo, mitad
-  trasera de un anillo) se dibuja antes que ella.
-- **Detalle con medida**: de 3 a 6 elementos repetidos (unidades de rack, puertos, ventanas,
-  barras) dan escala. Mas, ensucian.
-- **Flotar**: las piezas que no tocan el suelo (`Cloud`, `Page`) van en
-  `<g className="iso-float-2">` y, si hace falta, con un nodo pequeno en el suelo que las ancle.
-- **Luz de suelo**: la pone `Figure` (elipse radial del acento). No anadas otra.
-- **Sin repetir**: en una misma web, cada figura tiene un unico sitio. Antes de reutilizar una,
-  busca donde sale (`grep -rn "kind=\|kind:" .`). Si ya esta en otra seccion, crea una nueva.
+- Every figure takes `{ id, accent, p }`. Every gradient or filter id is prefixed with `${id}-` so
+  instances do not clash. Two figures on the same page never share an `id`.
+- No React state or effects: they are plain SVG.
+- Round with `r2` every value computed with trigonometry. Otherwise server and browser produce
+  different decimals and React reports a hydration mismatch.
+- Register the figure in `FigureKind` and `FIGURES`, and export it by name if it will be used
+  standalone.
+- One comment line above each figure: what it is and what its demo does.
 
-## 5. Animacion
+## 7. Workflow
 
-Vocabulario en `iso-figures.css`. Reutilizalo antes de inventar keyframes:
-
-| Clase | Efecto |
-|---|---|
-| `iso-led` | Luz que parpadea (escalonar con `delay`) |
-| `iso-ring` | Trazo que sube y baja de intensidad |
-| `iso-cell` | Celda que late |
-| `iso-glow` | Halo que respira |
-| `iso-flow` / `iso-flow-b` | Pulso que recorre una linea (desfasado con `-b`) |
-| `iso-win` / `iso-win lit` | Ventana apagada / encendida |
-| `iso-sec` | Bloque de contenido que aparece |
-| `iso-bar` | Barra que crece desde su base (`transformOrigin` en la esquina frontal del pie, con `r2`) |
-| `iso-lay-1`, `iso-lay-2` | Capas que se separan |
-| `iso-needle`, `iso-gauge-arc` | Aguja que barre y arco que se llena |
-| `iso-orbit` | Giro continuo dentro de `plane()` |
-| `iso-float-1/2/3` | Flotacion lenta |
-| `caret` | Cursor que parpadea |
-
-- **Reposo**: movimiento minimo y lento (luces, flujo). La figura no debe llamar la atencion sola.
-- **Mini demo**: `IsoFigure` recibe `on` y anade `fig-on` al SVG. Define la demo como reglas
-  `.fig-on .tu-clase { ... }`: algo que cuente que hace el objeto (la aguja barre, las barras
-  crecen, las ventanas se encienden). Que dure ~1,5 s como mucho, para que quepa en un carrusel
-  o un foco que va pasando de tarjeta en tarjeta.
-- Prefiere `transition` entre reposo y `fig-on` a cambiar la duracion de una animacion en marcha:
-  cambiar la duracion de un giro provoca un salto.
-- **Menos movimiento**: toda animacion continua nueva se anade al bloque
-  `@media (prefers-reduced-motion: reduce)` con `animation: none`.
-
-## 6. Reglas tecnicas
-
-- Cada figura recibe `{ id, accent }`. Todo `id` de degradado o filtro lleva el prefijo `${id}-`
-  para no chocar entre instancias. Dos figuras en la misma pagina nunca comparten `id`.
-- Sin estado ni efectos de React: son SVG puros.
-- Redondea con `r2` todo valor calculado con trigonometria: si no, el servidor y el navegador dan
-  decimales distintos y React avisa de un fallo de hidratacion.
-- Registra la figura en `FigureKind` y en `FIGURES`, y exportala con nombre si se va a usar suelta.
-- Una linea de comentario encima de cada figura: que es y que hace su demo.
-
-## 7. Flujo de trabajo
-
-1. Elige el objeto y su demo. Comprueba que no repite una figura ya usada en otra seccion.
-2. Dibujala en `Figures.tsx` con las primitivas, siguiendo marca y composicion.
-3. Revisala en una pagina temporal que la muestre en reposo y activa (en Next.js,
+1. Choose the object and its demo. Check it does not repeat a figure used elsewhere on the site.
+2. Draw it in `Figures.tsx` with the primitives, following brand and composition.
+3. Review it on a temporary page that shows it at rest and active, on both themes (in Next.js,
    `app/iso-preview/page.tsx`):
 
    ```tsx
    import IsoFigure, { type FigureKind } from "@/components/iso/Figures";
 
-   const KINDS: FigureKind[] = ["nueva"];
+   const KINDS: FigureKind[] = ["new-figure"];
 
    export default function Page() {
      return (
-       <main style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, padding: 16, background: "#000" }}>
-         {KINDS.flatMap((k) =>
-           [false, true].map((on) => (
-             <div key={`${k}${on}`} style={{ background: "#161617", borderRadius: 16, padding: 12 }}>
-               <IsoFigure kind={k} id={`pv-${k}-${on}`} on={on} className="h-[150px] w-full" />
-             </div>
-           )),
-         )}
+       <main>
+         {(["dark", "light"] as const).map((t) => (
+           <section key={t} style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, padding: 16, background: t === "dark" ? "#000" : "#F5F5F7" }}>
+             {KINDS.flatMap((k) =>
+               [false, true].map((on) => (
+                 <IsoFigure key={`${k}${on}`} kind={k} id={`pv-${t}-${k}-${on}`} theme={t} on={on} className="h-[150px] w-full" />
+               )),
+             )}
+           </section>
+         ))}
        </main>
      );
    }
    ```
 
-   Abrela en el navegador, haz captura y ajusta hasta que la silueta se lea y la demo cuente
-   algo. Mirala tambien junto a dos o tres figuras existentes para comparar peso.
-4. Borra la pagina temporal (y, en Next.js, `.next/types/app/iso-preview`). Nunca se commitea.
-5. Comprobacion de tipos y lint limpios, y sin avisos de hidratacion en consola.
-6. Commits pequenos y separados: primero la figura y su CSS, despues el cambio que la usa.
+   Open it in the browser, take a screenshot and adjust until the silhouette reads and the demo
+   tells something. Also look at it next to two or three existing figures to compare weight.
+4. Delete the temporary page (and, in Next.js, `.next/types/app/iso-preview`). Never commit it.
+5. Type check and lint clean, and no hydration warnings in the console.
+6. Small, separate commits: first the figure and its CSS, then the change that uses it.
 
-## 8. Lista de comprobacion
+## 8. Checklist
 
-- [ ] Se reconoce en 40 px.
-- [ ] Solo grafito y el acento (y el acento de apoyo); ningun otro color.
-- [ ] Una sola esquina con `edge` iluminado.
-- [ ] Cabe en el `viewBox` y pesa como sus vecinas.
-- [ ] Dibujada de atras hacia delante, sin piezas que se tapen mal.
-- [ ] Reposo tranquilo; demo con `fig-on` de 1,5 s como mucho.
-- [ ] Animaciones continuas nuevas desactivadas con menos movimiento.
-- [ ] Ids con prefijo `${id}-`; trigonometria redondeada con `r2`.
-- [ ] No repite una figura de otra seccion.
-- [ ] Pagina temporal borrada; tipos y lint limpios; commits separados.
+- [ ] Recognizable at 40 px.
+- [ ] Every color comes from the palette; only the accent (and the support accent) add hue.
+- [ ] Reads on both the dark and the light theme.
+- [ ] A single corner with a lit `edge`.
+- [ ] Fits the `viewBox` and weighs like its neighbors.
+- [ ] Drawn back to front, no pieces covering each other wrongly.
+- [ ] Quiet at rest; `fig-on` demo of 1.5 s at most.
+- [ ] New continuous animations disabled under reduced motion.
+- [ ] Ids prefixed with `${id}-`; trigonometry rounded with `r2`.
+- [ ] Does not repeat a figure from another section.
+- [ ] Temporary page deleted; type check and lint clean; separate commits.
